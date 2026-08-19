@@ -10,7 +10,10 @@
 | [`research/01-selection-and-evidence.md`](research/01-selection-and-evidence.md) | **1단계.** "많은 고객을 오래 점유"라는 기준(규모 × 체류 × 지속)으로 zeta / Character.AI / Talkie·Xingye 선정, 근거 데이터와 탈락 후보 사유 |
 | [`research/02-core-developers-and-technology.md`](research/02-core-developers-and-technology.md) | **2단계.** 각 프로젝트 핵심 개발자, 그들이 저술한 연구 계보, 제품에 차용한 기술 스택 |
 | [`research/03-hyped-papers-comparison.md`](research/03-hyped-papers-comparison.md) | **3단계.** 현시점 최고 화제 논문 3편(HOPE/Nested Learning, ALMA, SteeM) 개요와 정면 비교, 네 가지 구조적 공백 |
-| [`paper/narrative-state-is-not-memory.md`](paper/narrative-state-is-not-memory.md) | **4단계.** 본 논문 — *Narrative State Is Not Memory: A Three-Axis Design Space and the NAMS Architecture for Persona Storytelling Systems* (영문 본문 + 국문초록) |
+| [`paper/narrative-state-is-not-memory.md`](paper/narrative-state-is-not-memory.md) | **4단계.** 본 논문 (영문) — *Narrative State Is Not Memory: A Three-Axis Design Space and the NAMS Architecture for Persona Storytelling Systems* |
+| [`paper/narrative-state-is-not-memory.ko.md`](paper/narrative-state-is-not-memory.ko.md) | 본 논문 **국문판** — 「서사 상태는 기억이 아니다: 페르소나 스토리텔링 시스템을 위한 3축 설계 공간과 NAMS 아키텍처」 |
+| [`paper/서사상태는_기억이_아니다.pdf`](paper/서사상태는_기억이_아니다.pdf) | 국문판 조판 PDF (A4 19쪽, 표지·목차·러닝헤드 포함) |
+| [`tools/build_pdf.py`](tools/build_pdf.py) | 국문 마크다운 → PDF 조판 스크립트 (WeasyPrint) |
 
 ## 핵심 주장 한 줄 요약
 
