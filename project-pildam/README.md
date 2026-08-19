@@ -32,6 +32,33 @@ AI는 이미 존재하는 A+ 문학을 인용하고, 위치시키고, 도발하�
 | [`specs/character-cards.yaml`](specs/character-cards.yaml) | 1기 문우 6인 캐릭터 카드 (페르소나 코어 명세) |
 | [`specs/response-contract.md`](specs/response-contract.md) | 응답 계약 — 블록 스키마, VQR 하한, 금칙 문체, 검증 규칙 |
 | [`tools/validate_response.py`](tools/validate_response.py) | 응답 계약 검증기 (실행 가능) |
+| [`tools/pildam.py`](tools/pildam.py) | **대화 프로토타입 (실행 가능)** — 04장 파이프라인 ①~⑦ 전체 |
+| [`tools/build_corpus.py`](tools/build_corpus.py) | 저본 텍스트 → span 코퍼스 변환기 |
+| [`corpus/`](corpus/) | 샘플 코퍼스와 검증 등급 규칙 |
+
+## 실제로 대화해 보기
+
+```bash
+python3 project-pildam/tools/pildam.py --demo     # 스크립트 데모
+python3 project-pildam/tools/pildam.py            # 대화 모드 (/state /tau <n> /work <id> /quit)
+python3 project-pildam/tools/validate_response.py --self-test
+```
+
+의존성 없음, API 키 불필요. 기본 엔진 `mock`은 결정론적이며 파이프라인 전체를 실행한다 —
+독서 상태 갱신, (δ, π) 컨트롤러, viewpoint 조건부 검색, MIP 확장, 계약 검증과 재생성,
+그리고 실패 시 원문 단독 폴백까지.
+
+`--engine claude`는 ⑤ 프레임 생성만 Messages API로 바꾼다. 나머지 여섯 단계는 동일하다.
+모델은 여전히 **인용문 텍스트를 만들지 않는다** — span_id를 고르고 프레임 문장만 쓴다.
+`ANTHROPIC_API_KEY` 또는 `ant auth login` 프로필이 필요하다.
+
+```bash
+pip install anthropic
+python3 project-pildam/tools/pildam.py --engine claude --demo
+```
+
+`--min-verification sourced`(실서비스 기본값)로 실행하면 샘플 코퍼스는 아무것도 인용하지 못한다.
+저본 대조를 마치지 않은 텍스트는 인용할 수 없다는 L3가 데이터 계층에서 집행되기 때문이다.
 
 ## 세 줄 요약
 

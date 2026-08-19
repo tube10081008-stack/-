@@ -1,0 +1,102 @@
+{
+  "meta": {
+    "name": "필담 샘플 코퍼스",
+    "warning": "데모용. 실서비스 코퍼스가 아니다.",
+    "verification_levels": {
+      "sourced": "확정된 저본 파일에서 기계적으로 추출됨. 인용 가능.",
+      "self_attested": "널리 알려진 텍스트를 옮긴 것. 저본 대조 전. 기본값(strict)에서는 인용 거부됨.",
+      "placeholder": "자리표시자. 실제 원문이 아님. 파이프라인 시험 전용."
+    },
+    "translation_status": {
+      "sample_pending_human": "샘플 번역. L3에 따라 인간 문학번역가의 최종 확정이 필요하다."
+    }
+  },
+  "spans": {
+    "shakespeare.son18.001": {
+      "work_id": "shakespeare.sonnet18",
+      "work_title": "소네트 18",
+      "locus": "1-2행",
+      "lang_src": "en",
+      "text_src": "Shall I compare thee to a summer's day?\nThou art more lovely and more temperate:",
+      "text_ko": "그대를 여름날에 견주어 볼까요?\n그대가 더 사랑스럽고 더 온화합니다.",
+      "translator_id": "pildam.sample",
+      "translation_status": "sample_pending_human",
+      "verified": "self_attested",
+      "verification_note": "현대 표준 판본 기준. 저본 확정 필요.",
+      "mip_class": "standalone",
+      "prereq_spans": [],
+      "income_tags": ["덧없음", "찬미", "비교의 실패"],
+      "viewpoint": "화자",
+      "difficulty": 2,
+      "wildness_note": "질문으로 시작해 놓고 곧바로 그 비유가 모자란다고 스스로 취소한다."
+    },
+    "shakespeare.son18.002": {
+      "work_id": "shakespeare.sonnet18",
+      "work_title": "소네트 18",
+      "locus": "13-14행 (결구)",
+      "lang_src": "en",
+      "text_src": "So long as men can breathe or eyes can see,\nSo long lives this, and this gives life to thee.",
+      "text_ko": "사람이 숨 쉬고 눈이 볼 수 있는 한,\n이것이 살아 있고, 이것이 그대에게 생명을 줍니다.",
+      "translator_id": "pildam.sample",
+      "translation_status": "sample_pending_human",
+      "verified": "self_attested",
+      "verification_note": "현대 표준 판본 기준. 저본 확정 필요.",
+      "mip_class": "requires_prereq",
+      "prereq_spans": ["shakespeare.son18.001"],
+      "income_tags": ["영속", "자기과시", "시의 효용"],
+      "viewpoint": "화자",
+      "difficulty": 3,
+      "wildness_note": "연인을 찬미하는 시가 마지막에 와서 실은 자기 시를 자랑한다."
+    },
+    "shakespeare.hamlet.3-1-001": {
+      "work_id": "shakespeare.hamlet",
+      "work_title": "햄릿",
+      "locus": "3막 1장",
+      "lang_src": "en",
+      "text_src": "To be, or not to be, that is the question:",
+      "text_ko": "있음이냐 없음이냐, 그것이 문제로다.",
+      "translator_id": "pildam.sample",
+      "translation_status": "sample_pending_human",
+      "verified": "self_attested",
+      "verification_note": "판본별 문장부호 차이 있음(대시/쉼표). 저본 확정 필요.",
+      "mip_class": "standalone",
+      "prereq_spans": [],
+      "income_tags": ["결정 불능", "죽음", "행위의 마비"],
+      "viewpoint": "햄릿",
+      "difficulty": 3,
+      "wildness_note": "가장 유명한 대사가 사실은 아무것도 결정하지 못하는 사람의 말이다."
+    },
+    "austen.pp.2-12.001": {
+      "work_id": "austen.pride_and_prejudice",
+      "work_title": "오만과 편견",
+      "locus": "제2권 12장 (다아시의 편지)",
+      "lang_src": "en",
+      "text_src": "(PLACEHOLDER — 실제 원문 아님. 다아시가 엘리자베스에게 자기 감정이 아니라 정의감에 호소하며 편지를 읽어 달라 요청하는 대목이 여기 들어간다. 저본에서 추출해 교체할 것.)",
+      "text_ko": "(자리표시자 — 실제 원문 아님. 저본에서 추출해 교체할 것.)",
+      "translator_id": null,
+      "translation_status": null,
+      "verified": "placeholder",
+      "verification_note": "네트워크 제약으로 저본 미확보. corpus/README.md의 수집 절차 참조.",
+      "mip_class": "requires_prereq",
+      "prereq_spans": ["austen.pp.2-11.009"],
+      "income_tags": ["판단의 철회", "정의감", "오해"],
+      "viewpoint": "다아시",
+      "difficulty": 3,
+      "wildness_note": "좁은 무대에서 벌어지는 외과적 정확성."
+    },
+    "austen.pp.2-11.009": {
+      "work_id": "austen.pride_and_prejudice",
+      "work_title": "오만과 편견",
+      "locus": "제2권 11장",
+      "lang_src": "en",
+      "text_src": "(PLACEHOLDER — 선행 span 자리표시자. 실제 원문 아님.)",
+      "text_ko": "(자리표시자 — 실제 원문 아님.)",
+      "verified": "placeholder",
+      "mip_class": "standalone",
+      "prereq_spans": [],
+      "income_tags": ["거절", "오만"],
+      "viewpoint": "엘리자베스",
+      "difficulty": 2
+    }
+  }
+}
