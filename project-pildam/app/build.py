@@ -16,11 +16,13 @@ KEEP = ("work_id", "work_title", "locus", "text_src", "text_ko",
 def main() -> None:
     corpus = json.loads((ROOT / "corpus/pildam-v2.json").read_text(encoding="utf-8"))["spans"]
     bank = json.loads((ROOT / "corpus/frames-gemini.json").read_text(encoding="utf-8"))
+    chrome = json.loads((ROOT / "corpus/chrome-gemini.json").read_text(encoding="utf-8"))
     slim = {k: {f: v[f] for f in KEEP} for k, v in corpus.items()}
 
     html = (ROOT / "app/index.template.html").read_text(encoding="utf-8")
     html = html.replace("__CORPUS__", json.dumps(slim, ensure_ascii=False))
     html = html.replace("__BANK__", json.dumps(bank, ensure_ascii=False))
+    html = html.replace("__CHROME__", json.dumps(chrome, ensure_ascii=False))
     out = ROOT / "app/index.html"
     out.write_text(html, encoding="utf-8")
     print(f"{len(html)/1024:.0f} KB → {out.relative_to(ROOT)}  "

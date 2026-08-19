@@ -203,6 +203,7 @@ body.gauges .gauge{display:flex}
 <script>
 const CORPUS = __CORPUS__;
 const BANK = __BANK__;
+const CHROME = __CHROME__;
 
 const WRITERS = {
   shakespeare: {name:"윌리엄 셰익스피어", died:1616, face:"셰", cls:"",
@@ -222,12 +223,17 @@ const ROOMS = [
 /* ── 계약 (specs/response-contract.md) ──────────────────── */
 const VQR_FLOOR = 0.60, VQR_FLOOR_APPEAL = 0.75, FRAME_BUDGET = 400,
       FRAME_RATIO = 0.8, APPEAL_TAU = 10;
+// 응대 턴: 인사·자기소개·딴소리. 문학적 소득을 주장하지 않으므로 인용이 없고, 대신 짧다.
+const CHROME_BUDGET = 140;
+const CHROME_INTENTS = ['greeting','identity','ai','offtopic'];
 const BANNED = [
   [/(마음|심정)[이을]?\s*(충분히\s*)?(이해|공감)/, "감정 미러링"],
   [/(슬프|힘드|괴로우)시겠/, "감정 미러링"],
   [/(위대한|아름다운|훌륭한)\s*(작품|문장|글|구절)/, "작품 평가"],
   [/요컨대|정리하자면|한마디로/, "요약 접속"],
   [/물론\s*반대\s*(의견|견해)도/, "무해한 균형"],
+  // 모델이 작가의 어조로 일반 명제를 단정하면 그것은 위작이다 (L1)
+  [/(인생|삶|세상\s*만사|세상|인간)(은|이란|이라는)\s*[^.]{0,24}(입니다|이다|이지요)/, "위작 잠언"],
 ];
 
 /* ── 상태 ───────────────────────────────────────────────── */
@@ -248,11 +254,15 @@ function openRoom(room){
   log.innerHTML = "";
   show("chat");
   sysLine(`${S.writer.name} · 몰년 ${S.writer.died}. 원문은 Project Gutenberg 저본에서 추출됐습니다.`);
-  step("__open__", "continue");
+  run(() => chromeTurn("greeting", true));
 }
 
 /* ── ① 의도 ─────────────────────────────────────────────── */
 function classify(t){
+  if (/\bAI\b|에이아이|인공지능|챗봇|기계|로봇|진짜\s*(셰익스피어|오스틴|사람)|사람이(야|니|에요|예요)/i.test(t)) return "ai";
+  if (/(넌|너는|너|당신은|당신)\s*누구|누구(세요|야|니|십니까)|정체가|자기\s*소개|소개(해|좀)/.test(t)) return "identity";
+  if (/^\s*(안녕|하이|헬로|할로|반가|ㅎㅇ|안뇽|여보세요|계세요)/.test(t)) return "greeting";
+  if (/날씨|밥\s*먹|뭐\s*해|뭐해|심심|졸려|배고|사랑해|보고\s*싶|주말|퇴근|게임|축구/.test(t)) return "offtopic";
   if (/요약|줄거리|정리해|간단히|짧게/.test(t)) return "summary_request";
   if (/오만|무책임|이기적|비겁|한심|위선|틀렸|나쁘|겁쟁이|우유부단|찌질|싫/.test(t)) return "verdict";
   if (/^(맞아|그러네|그렇네|동의|응|그런\s*것\s*같아|인정)/.test(t.trim())) return "agree";
@@ -337,9 +347,32 @@ function validate(frame, appeal, spanIds){
   return {errs, vqr, slp: errs.some(e=>e.startsWith("BANNED")) ? 1 : 0};
 }
 
+/* ── 응대 턴 (인용 없음) ───────────────────────────────────── */
+function pick(arr){ return arr[(S.variant++) % arr.length]; }
+async function chromeTurn(intent, withInvite){
+  const c = CHROME[S.room.writer];
+  const pool = (c[intent] || c.greeting).filter(l => !BANNED.some(([re]) => re.test(l)));
+  let line = pick(pool.length ? pool : c.greeting);
+  const invite = withInvite ? pick(c.invite) : null;
+  let text = invite ? line + " " + invite : line;
+  const bad = BANNED.filter(([re]) => re.test(text));
+  if (bad.length || text.length > CHROME_BUDGET) text = line.slice(0, CHROME_BUDGET);
+  S.turns++;
+  await typing();
+  if (intent === "ai")
+    sysLine("이 대화의 응답은 <b>AI가 생성</b>합니다. 붉은 칸의 인용문만 원문입니다.");
+  bubble(text);
+    log.append(el(`<div class="gauge"><span>응대 · 인용 없음</span><span>τ <b>${S.tau}</b></span>
+    <span class="why">문학적 소득을 주장하지 않는 턴이므로 VQR 하한을 적용하지 않는다. 대신 ${CHROME_BUDGET}자 이내.</span></div>`));
+  scroll();
+  // 대목을 보자고 청했으면 실제로 연다. 지키지 않을 약속은 하지 않는다.
+  if (invite){ await sleep(240); await step("__open__", "continue"); }
+}
+
 /* ── 한 턴 ─────────────────────────────────────────────── */
-function step(text, forced){
+async function step(text, forced){
   const intent = forced || classify(text);
+  if (CHROME_INTENTS.includes(intent)) return await chromeTurn(intent, intent !== "offtopic");
   S.lastIntent = intent;
   if (intent === "verdict"){ S.stance = text; S.stanceVp = target(text) || S.stanceVp; }
   S.turns++;
@@ -363,7 +396,8 @@ function step(text, forced){
   const fallback = r.errs.length ? r.errs : null;
   if (fallback) frame = null;
 
-  typing(() => {
+  await typing();
+  {
     if (frame) bubble(frame);
     if (appeal) bubble(appeal, "appeal");
     spans.forEach(sid => quoteCard(sid));
@@ -377,7 +411,7 @@ function step(text, forced){
     }
     S.tau++; store.set("tau."+S.room.id, S.tau);
     document.getElementById("what").textContent = S.room.title + " · τ " + S.tau;
-  });
+  }
 }
 
 /* ── 렌더 ──────────────────────────────────────────────── */
@@ -436,11 +470,25 @@ function contrast(){
   log.append(card); scroll();
 }
 
-function typing(done){
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+async function typing(){
   const t = el(`<div class="row"><div class="face ${S.writer.cls}">${S.writer.face}</div>
     <div class="bub typing"><i></i><i></i><i></i></div></div>`);
   log.append(t); scroll();
-  setTimeout(() => { t.remove(); done(); }, 420 + Math.random()*380);
+  await sleep(420 + Math.random()*380);
+  t.remove();
+}
+
+/* 한 번에 한 턴만 진행한다. 겹치면 인사보다 원문이 먼저 나온다. */
+let busy = false;
+async function run(fn){
+  if (busy) return;
+  busy = true;
+  document.getElementById("sendbtn").disabled = true;
+  try { await fn(); } finally {
+    busy = false;
+    document.getElementById("sendbtn").disabled = false;
+  }
 }
 
 /* ── 셸 ────────────────────────────────────────────────── */
@@ -465,11 +513,12 @@ document.getElementById("chips").append(...CHIPS.map(c => {
   const b = el(`<button class="chip">${c.t}</button>`);
   b.addEventListener("click", () => {
     if (c.act === "contrast") return contrast();
-    if (c.act === "regen"){ S.variant++; sysLine("다시 씁니다."); return step("__regen__", S.lastIntent||"continue"); }
+    if (c.act === "regen"){ S.variant++; sysLine("다시 씁니다."); return run(() => step("__regen__", S.lastIntent||"continue")); }
     if (c.act === "tau"){ S.tau += 20; store.set("tau."+S.room.id, S.tau);
       document.getElementById("what").textContent = S.room.title + " · τ " + S.tau;
       return sysLine(`τ를 <b>${S.tau}</b>로 올렸습니다. 이제 정의감 호출이 가능합니다.`); }
-    mine(c.say); step(c.say);
+    if (busy) return;
+    mine(c.say); run(() => step(c.say));
   });
   return b;
 }));
@@ -486,6 +535,7 @@ document.getElementById("form").addEventListener("submit", e => {
   e.preventDefault();
   const input = document.getElementById("say");
   const v = input.value.trim(); if (!v) return;
-  input.value = ""; mine(v); step(v);
+  if (busy) return;
+  input.value = ""; mine(v); run(() => step(v));
 });
 </script>
