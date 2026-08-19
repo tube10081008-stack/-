@@ -1,3 +1,4 @@
 project-pildam/.env
 *.key
 .env
+project-pildam/app/index.html

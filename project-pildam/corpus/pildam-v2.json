@@ -1,0 +1,264 @@
+{
+  "meta": {
+    "name": "필담 코퍼스 v2",
+    "sources": {
+      "shakespeare.txt": "7c87c9da9ad1c94545cd5db555ca1fc7ce982182ad9e1723dfa4f9670e0f40c4",
+      "Pride-and-Prejudice_1342.txt": "441e778a4297bfc944dc254810e8ded3134cfb0e36d73eef6bb312b4ffd74d6a"
+    },
+    "note": "원문은 Project Gutenberg 판본에서 기계 추출(sourced). 한국어는 샘플 번역."
+  },
+  "spans": {
+    "sonnet18.01": {
+      "work_id": "shakespeare.sonnet18",
+      "writer_id": "shakespeare",
+      "work_title": "소네트 18",
+      "locus": "1–4행",
+      "lang_src": "en",
+      "text_src": "Shall I compare thee to a summer's day?\nThou art more lovely and more temperate:\nRough winds do shake the darling buds of May,\nAnd summer's lease hath all too short a date:",
+      "text_ko": "그대를 여름날에 견주어 볼까요?\n그대가 더 사랑스럽고 더 온화합니다.\n거친 바람이 오월의 어여쁜 꽃봉오리를 흔들고,\n여름이 빌린 기한은 너무도 짧습니다.",
+      "translator_id": "pildam.sample",
+      "translation_status": "sample_pending_human",
+      "verified": "sourced",
+      "source_sha256": "7c87c9da9ad1c94545cd5db555ca1fc7ce982182ad9e1723dfa4f9670e0f40c4",
+      "source_file": "shakespeare.txt",
+      "mip_class": "standalone",
+      "prereq_spans": [],
+      "income_tags": [
+        "덧없음",
+        "찬미",
+        "비교의 실패"
+      ],
+      "viewpoint": "화자",
+      "difficulty": 2,
+      "wildness_note": "질문으로 열어 놓고 곧바로 그 비유가 모자란다고 스스로 취소한다."
+    },
+    "sonnet18.02": {
+      "work_id": "shakespeare.sonnet18",
+      "writer_id": "shakespeare",
+      "work_title": "소네트 18",
+      "locus": "5–8행",
+      "lang_src": "en",
+      "text_src": "Sometime too hot the eye of heaven shines,\nAnd often is his gold complexion dimmed,\nAnd every fair from fair sometime declines,\nBy chance, or nature's changing course untrimmed:",
+      "text_ko": "때로 하늘의 눈이 너무 뜨겁게 타오르고,\n자주 그 금빛 얼굴은 흐려집니다.\n아름다운 것은 모두 언젠가 아름다움에서 기울어집니다,\n우연으로, 혹은 자연이 바꾸어 놓는 행로에 다듬어지지 못한 채.",
+      "translator_id": "pildam.sample",
+      "translation_status": "sample_pending_human",
+      "verified": "sourced",
+      "source_sha256": "7c87c9da9ad1c94545cd5db555ca1fc7ce982182ad9e1723dfa4f9670e0f40c4",
+      "source_file": "shakespeare.txt",
+      "mip_class": "requires_prereq",
+      "prereq_spans": [
+        "sonnet18.01"
+      ],
+      "income_tags": [
+        "쇠퇴",
+        "우연",
+        "자연"
+      ],
+      "viewpoint": "화자",
+      "difficulty": 2,
+      "wildness_note": "찬미하겠다면서 네 행을 통째로 시드는 것들에 쓴다."
+    },
+    "sonnet18.03": {
+      "work_id": "shakespeare.sonnet18",
+      "writer_id": "shakespeare",
+      "work_title": "소네트 18",
+      "locus": "9–12행",
+      "lang_src": "en",
+      "text_src": "But thy eternal summer shall not fade,\nNor lose possession of that fair thou ow'st,\nNor shall death brag thou wand'rest in his shade,\nWhen in eternal lines to time thou grow'st,",
+      "text_ko": "그러나 그대의 영원한 여름은 시들지 않고,\n그대가 지닌 그 아름다움을 잃지도 않을 것이며,\n죽음도 그대가 제 그늘을 헤맨다 뽐내지 못할 것입니다,\n그대가 영원한 시행 속에서 시간을 향해 자라날 때에는.",
+      "translator_id": "pildam.sample",
+      "translation_status": "sample_pending_human",
+      "verified": "sourced",
+      "source_sha256": "7c87c9da9ad1c94545cd5db555ca1fc7ce982182ad9e1723dfa4f9670e0f40c4",
+      "source_file": "shakespeare.txt",
+      "mip_class": "requires_prereq",
+      "prereq_spans": [
+        "sonnet18.02"
+      ],
+      "income_tags": [
+        "영속",
+        "죽음에의 반박"
+      ],
+      "viewpoint": "화자",
+      "difficulty": 3,
+      "wildness_note": "죽음을 향해 뽐내지 말라고 직접 말을 건다."
+    },
+    "sonnet18.04": {
+      "work_id": "shakespeare.sonnet18",
+      "writer_id": "shakespeare",
+      "work_title": "소네트 18",
+      "locus": "13–14행 (결구)",
+      "lang_src": "en",
+      "text_src": "So long as men can breathe or eyes can see,\nSo long lives this, and this gives life to thee.",
+      "text_ko": "사람이 숨 쉬고 눈이 볼 수 있는 한,\n이것이 살아 있고, 이것이 그대에게 생명을 줍니다.",
+      "translator_id": "pildam.sample",
+      "translation_status": "sample_pending_human",
+      "verified": "sourced",
+      "source_sha256": "7c87c9da9ad1c94545cd5db555ca1fc7ce982182ad9e1723dfa4f9670e0f40c4",
+      "source_file": "shakespeare.txt",
+      "mip_class": "requires_prereq",
+      "prereq_spans": [
+        "sonnet18.03"
+      ],
+      "income_tags": [
+        "영속",
+        "자기과시",
+        "시의 효용"
+      ],
+      "viewpoint": "화자",
+      "difficulty": 3,
+      "wildness_note": "연인을 찬미하던 시가 마지막 두 행에서 실은 자기 시를 자랑한다."
+    },
+    "hamlet31.01": {
+      "work_id": "shakespeare.hamlet",
+      "writer_id": "shakespeare",
+      "work_title": "햄릿",
+      "locus": "3막 1장 (1/4)",
+      "lang_src": "en",
+      "text_src": "To be, or not to be- that is the question:\nWhether 'tis nobler in the mind to suffer\nThe slings and arrows of outrageous fortune\nOr to take arms against a sea of troubles,\nAnd by opposing end them. To die- to sleep-",
+      "text_ko": "있음이냐 없음이냐, 그것이 문제로다.\n어느 쪽이 정신에 더 고귀한가 —\n난폭한 운명이 쏘아 대는 돌팔매와 화살을 견디는 것인가,\n아니면 고난의 바다에 맞서 무기를 들고,\n맞섬으로써 그것들을 끝내는 것인가.",
+      "translator_id": "pildam.sample",
+      "translation_status": "sample_pending_human",
+      "verified": "sourced",
+      "source_sha256": "7c87c9da9ad1c94545cd5db555ca1fc7ce982182ad9e1723dfa4f9670e0f40c4",
+      "source_file": "shakespeare.txt",
+      "mip_class": "standalone",
+      "prereq_spans": [],
+      "income_tags": [
+        "결정 불능",
+        "죽음",
+        "행위의 마비"
+      ],
+      "viewpoint": "햄릿",
+      "difficulty": 3,
+      "wildness_note": "가장 유명한 대사가 실은 아무것도 결정하지 못하는 사람의 말이다."
+    },
+    "hamlet31.02": {
+      "work_id": "shakespeare.hamlet",
+      "writer_id": "shakespeare",
+      "work_title": "햄릿",
+      "locus": "3막 1장 (2/4)",
+      "lang_src": "en",
+      "text_src": "And by opposing end them. To die- to sleep-\nNo more; and by a sleep to say we end\nThe heartache, and the thousand natural shocks\nThat flesh is heir to. 'Tis a consummation\nDevoutly to be wish'd. To die- to sleep.",
+      "text_ko": "죽는 것 — 잠드는 것 —\n그뿐. 그리고 잠으로써 끝낸다고 말할 수 있다면,\n가슴앓이와, 살덩이가 물려받은\n천 가지 타고난 충격들을. 그것은\n간절히 바랄 만한 완성이다.",
+      "translator_id": "pildam.sample",
+      "translation_status": "sample_pending_human",
+      "verified": "sourced",
+      "source_sha256": "7c87c9da9ad1c94545cd5db555ca1fc7ce982182ad9e1723dfa4f9670e0f40c4",
+      "source_file": "shakespeare.txt",
+      "mip_class": "requires_prereq",
+      "prereq_spans": [
+        "hamlet31.01"
+      ],
+      "income_tags": [
+        "죽음",
+        "안식에의 유혹"
+      ],
+      "viewpoint": "햄릿",
+      "difficulty": 3,
+      "wildness_note": "죽음을 잠이라 부르며 스스로를 달래다가 말이 끊긴다."
+    },
+    "hamlet31.03": {
+      "work_id": "shakespeare.hamlet",
+      "writer_id": "shakespeare",
+      "work_title": "햄릿",
+      "locus": "3막 1장 (3/4)",
+      "lang_src": "en",
+      "text_src": "Devoutly to be wish'd. To die- to sleep.\nTo sleep- perchance to dream: ay, there's the rub!\nFor in that sleep of death what dreams may come\nWhen we have shuffled off this mortal coil,\nMust give us pause. There's the respect\nThat makes calamity of so long life.",
+      "text_ko": "죽는 것 — 잠드는 것.\n잠드는 것 — 어쩌면 꿈꾸는 것. 아, 거기에 걸림돌이 있다.\n죽음의 그 잠 속에서 무슨 꿈이 찾아올지,\n이 육신의 굴레를 벗어던졌을 때,\n그것이 우리를 멈춰 세운다.",
+      "translator_id": "pildam.sample",
+      "translation_status": "sample_pending_human",
+      "verified": "sourced",
+      "source_sha256": "7c87c9da9ad1c94545cd5db555ca1fc7ce982182ad9e1723dfa4f9670e0f40c4",
+      "source_file": "shakespeare.txt",
+      "mip_class": "requires_prereq",
+      "prereq_spans": [
+        "hamlet31.02"
+      ],
+      "income_tags": [
+        "공포",
+        "미지",
+        "망설임"
+      ],
+      "viewpoint": "햄릿",
+      "difficulty": 3,
+      "wildness_note": "죽지 못하는 이유가 용기가 아니라 무지라고 실토한다."
+    },
+    "hamlet31.04": {
+      "work_id": "shakespeare.hamlet",
+      "writer_id": "shakespeare",
+      "work_title": "햄릿",
+      "locus": "3막 1장 (4/4)",
+      "lang_src": "en",
+      "text_src": "That makes calamity of so long life.\nFor who would bear the whips and scorns of time,\nTh' oppressor's wrong, the proud man's contumely,",
+      "text_ko": "바로 그 망설임이\n이토록 긴 삶을 재앙으로 만든다.\n누가 시대의 채찍질과 멸시를 견디겠는가,\n압제자의 횡포를, 오만한 자의 모욕을,",
+      "translator_id": "pildam.sample",
+      "translation_status": "sample_pending_human",
+      "verified": "sourced",
+      "source_sha256": "7c87c9da9ad1c94545cd5db555ca1fc7ce982182ad9e1723dfa4f9670e0f40c4",
+      "source_file": "shakespeare.txt",
+      "mip_class": "requires_prereq",
+      "prereq_spans": [
+        "hamlet31.03"
+      ],
+      "income_tags": [
+        "시스템 비판",
+        "모욕",
+        "견딤"
+      ],
+      "viewpoint": "햄릿",
+      "difficulty": 3,
+      "wildness_note": "개인의 우울에서 시작한 독백이 압제와 제도 이야기로 번진다."
+    },
+    "pp.letter.01": {
+      "work_id": "austen.pp",
+      "writer_id": "austen",
+      "work_title": "오만과 편견",
+      "locus": "제2권 12장 · 다아시의 편지 첫머리",
+      "lang_src": "en",
+      "text_src": "\"Be not alarmed, madam, on receiving this letter, by the apprehension of its containing any repetition of those sentiments or renewal of those offers which were last night so disgusting to you. I write without any intention of paining you, or humbling myself, by dwelling on wishes which, for the happiness of both, cannot be too soon forgotten; and the effort which the formation and the perusal of this letter must occasion, should have been spared, had not my character required it to be written and read. You must, therefore, pardon the freedom with which I demand your attention; your feelings, I know, will bestow it unwillingly, but I demand it of your justice.",
+      "verified": "sourced",
+      "source_sha256": "441e778a4297bfc944dc254810e8ded3134cfb0e36d73eef6bb312b4ffd74d6a",
+      "source_file": "Pride-and-Prejudice_1342.txt",
+      "text_ko": "놀라지 마십시오, 부인. 이 편지가 어젯밤 당신에게 그토록 역겨웠던 그 감정의 되풀이나 그 청혼의 재개를 담고 있지 않을까 하는 염려로는. 저는 당신을 아프게 하거나 저 자신을 낮추려는 의도 없이 씁니다. 둘 모두의 행복을 위해 하루빨리 잊는 편이 나은 바람들에 매달리지 않겠습니다. 이 편지를 쓰고 또 읽게 하는 수고는 마땅히 면할 수 있었을 것입니다, 제 인격이 그것을 쓰고 읽히기를 요구하지 않았더라면. 그러니 당신의 주의를 요구하는 이 무례를 용서하십시오. 당신의 감정은, 압니다, 그것을 마지못해 내어 줄 것입니다. 그러나 저는 당신의 정의감에 그것을 요구합니다.",
+      "translator_id": "pildam.sample",
+      "translation_status": "sample_pending_human",
+      "mip_class": "standalone",
+      "prereq_spans": [],
+      "income_tags": [
+        "정의감",
+        "판단의 철회",
+        "오해"
+      ],
+      "viewpoint": "다아시",
+      "difficulty": 3,
+      "wildness_note": "사과하지 않는다. 감정을 인정하면서도 감정에 호소하기를 거부한다."
+    },
+    "pp.letter.02": {
+      "work_id": "austen.pp",
+      "writer_id": "austen",
+      "work_title": "오만과 편견",
+      "locus": "제2권 12장 · 두 가지 죄목",
+      "lang_src": "en",
+      "text_src": "\"Two offenses of a very different nature, and by no means of equal magnitude, you last night laid to my charge. The first mentioned was, that, regardless of the sentiments of either, I had detached Mr. Bingley from your sister, and the other, that I had, in defiance of various claims, in defiance of honour and humanity, ruined the immediate prosperity and blasted the prospects of Mr. Wickham. Wilfully and",
+      "verified": "sourced",
+      "source_sha256": "441e778a4297bfc944dc254810e8ded3134cfb0e36d73eef6bb312b4ffd74d6a",
+      "source_file": "Pride-and-Prejudice_1342.txt",
+      "text_ko": "성격이 매우 다르고 결코 경중이 같지 않은 두 가지 잘못을 어젯밤 당신은 제게 물으셨습니다. 첫 번째는, 두 사람의 감정을 아랑곳하지 않고 제가 빙리 씨를 당신의 언니에게서 떼어 놓았다는 것이었고, 다른 하나는, 여러 권리를 짓밟고 명예와 인간됨을 짓밟으며 제가 위컴 씨의 눈앞의 번영을 무너뜨리고 그 앞날을 시들게 했다는 것이었습니다.",
+      "translator_id": "pildam.sample",
+      "translation_status": "sample_pending_human",
+      "mip_class": "requires_prereq",
+      "prereq_spans": [
+        "pp.letter.01"
+      ],
+      "income_tags": [
+        "죄목",
+        "해명",
+        "공정한 판단"
+      ],
+      "viewpoint": "다아시",
+      "difficulty": 3,
+      "wildness_note": "변명을 시작하면서 상대가 건 죄목을 한 자도 빼지 않고 먼저 정확히 되읊는다."
+    }
+  }
+}

@@ -34,9 +34,28 @@ AI는 이미 존재하는 A+ 문학을 인용하고, 위치시키고, 도발하�
 | [`tools/validate_response.py`](tools/validate_response.py) | 응답 계약 검증기 (실행 가능) |
 | [`tools/pildam.py`](tools/pildam.py) | **대화 프로토타입 (실행 가능)** — 04장 파이프라인 ①~⑦ 전체 |
 | [`tools/build_corpus.py`](tools/build_corpus.py) | 저본 텍스트 → span 코퍼스 변환기 |
-| [`corpus/`](corpus/) | 샘플 코퍼스와 검증 등급 규칙 |
+| [`app/`](app/) | **채팅 앱** — 템플릿과 빌드 스크립트 |
+| [`corpus/`](corpus/) | 코퍼스(`pildam-v2.json`, sourced 10 span)와 Gemini 프레임 뱅크, 검증 등급 규칙 |
+| [`tools/extract_spans.py`](tools/extract_spans.py) | 저본에서 특정 대목을 span으로 추출 |
+| [`tools/gen_frames.py`](tools/gen_frames.py) | 프레임 뱅크 생성 (Gemini) |
 
 ## 실제로 대화해 보기
+
+### 채팅 앱 (모바일)
+
+`app/index.html` — 제타식 채팅 UI. 문우를 고르고 말을 걸면 원문이 온다.
+원문 카드는 말풍선이 아니고, 모델의 말은 작고 부차적이다. 화면이 곧 이 프로젝트의 논지다.
+
+```bash
+python3 project-pildam/app/build.py   # 코퍼스 + 프레임 뱅크를 단일 HTML로 묶는다
+```
+
+네트워크를 쓰지 않는다. 원문과 프레임이 전부 페이지 안에 들어가고,
+δ/π 컨트롤러·검색·MIP 확장·계약 검증이 브라우저에서 그대로 돈다.
+프레임 문장은 `tools/gen_frames.py`가 Gemini로 미리 만들어 둔 것이며,
+모델은 여기서도 인용문 텍스트를 만들지 않는다.
+
+### CLI
 
 ```bash
 python3 project-pildam/tools/pildam.py --demo     # 스크립트 데모

@@ -1,0 +1,491 @@
+<title>필담</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700&family=IBM+Plex+Sans+KR:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#E9EAE4; --paper:#FAFAF7; --sunken:#DEE0D8;
+  --ink:#191F1D; --ink-soft:#3D4744; --muted:#69746F; --faint:#939E98;
+  --rule:#D3D7CE; --rule-soft:#E1E4DC;
+  --seal:#9C3A2D; --seal-wash:#9C3A2D12; --seal-rail:#9C3A2D;
+  --celadon:#3D7365; --celadon-wash:#3D736510;
+  --indigo:#2E4858; --on-indigo:#F2F4F1;
+  --ochre:#87621A; --ochre-wash:#87621A16;
+  --shadow:0 1px 2px rgba(25,31,29,.07), 0 6px 18px rgba(25,31,29,.05);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#101514; --paper:#191F1D; --sunken:#0B0F0E;
+    --ink:#E6E9E3; --ink-soft:#C0C8C2; --muted:#8F9C95; --faint:#6A7772;
+    --rule:#2A322F; --rule-soft:#222927;
+    --seal:#D07360; --seal-wash:#D073601C; --seal-rail:#B7563F;
+    --celadon:#82B8A7; --celadon-wash:#82B8A714;
+    --indigo:#7FA6BC; --on-indigo:#0E1518;
+    --ochre:#CBA35C; --ochre-wash:#CBA35C1A;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 18px rgba(0,0,0,.25);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#101514; --paper:#191F1D; --sunken:#0B0F0E;
+  --ink:#E6E9E3; --ink-soft:#C0C8C2; --muted:#8F9C95; --faint:#6A7772;
+  --rule:#2A322F; --rule-soft:#222927;
+  --seal:#D07360; --seal-wash:#D073601C; --seal-rail:#B7563F;
+  --celadon:#82B8A7; --celadon-wash:#82B8A714;
+  --indigo:#7FA6BC; --on-indigo:#0E1518;
+  --ochre:#CBA35C; --ochre-wash:#CBA35C1A;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 18px rgba(0,0,0,.25);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:"IBM Plex Sans KR",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-weight:300; font-size:16px; line-height:1.7; word-break:keep-all;
+  -webkit-text-size-adjust:100%; overscroll-behavior:none;
+}
+button{font:inherit; color:inherit; background:none; border:0; cursor:pointer}
+button:focus-visible,input:focus-visible{outline:2px solid var(--celadon); outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none !important; transition:none !important}}
+
+#app{max-width:34rem; margin:0 auto; height:100dvh; display:flex; flex-direction:column; background:var(--ground)}
+.view{flex:1; min-height:0; display:none; flex-direction:column}
+.view.on{display:flex}
+
+/* ── 홈 ─────────────────────────────────── */
+#home{overflow-y:auto; padding:2.2rem 1.15rem 2.6rem; gap:1.5rem}
+.brand{font-family:"Nanum Myeongjo",serif; font-weight:700; font-size:2.4rem; letter-spacing:.06em; margin:0}
+.brand small{display:block; font-family:"IBM Plex Mono",monospace; font-size:.66rem; font-weight:400;
+  letter-spacing:.3em; color:var(--faint); margin-top:.45rem}
+.pitch{color:var(--ink-soft); font-size:.94rem; margin:.9rem 0 0}
+.pitch b{font-weight:500; color:var(--ink); border-bottom:1px solid var(--seal); padding-bottom:1px}
+.rooms{display:flex; flex-direction:column; gap:.7rem; margin-top:.4rem}
+.room{display:flex; gap:.9rem; align-items:center; text-align:left; width:100%;
+  background:var(--paper); border:1px solid var(--rule-soft); border-radius:3px;
+  padding:.9rem 1rem; box-shadow:var(--shadow); transition:transform .12s ease}
+.room:active{transform:scale(.985)}
+.face{width:3rem; height:3rem; flex:none; border-radius:50%; display:grid; place-items:center;
+  font-family:"Nanum Myeongjo",serif; font-size:1.35rem; color:var(--paper); background:var(--indigo)}
+.face.b{background:var(--seal)}
+.room-t{flex:1; min-width:0}
+.room-t b{display:block; font-weight:500; font-size:1rem}
+.room-t span{display:block; font-size:.8rem; color:var(--muted); overflow:hidden;
+  text-overflow:ellipsis; white-space:nowrap}
+.room-n{font-family:"IBM Plex Mono",monospace; font-size:.66rem; color:var(--faint); letter-spacing:.08em}
+.vow{border-top:1px solid var(--rule); padding-top:1.1rem; font-size:.8rem; color:var(--muted)}
+.vow b{color:var(--seal); font-weight:500}
+
+/* ── 채팅 헤더 ──────────────────────────── */
+.bar{display:flex; align-items:center; gap:.7rem; padding:.7rem .9rem;
+  background:var(--paper); border-bottom:1px solid var(--rule); flex:none}
+.bar .face{width:2.1rem; height:2.1rem; font-size:.95rem}
+.bar-t{flex:1; min-width:0}
+.bar-t b{display:block; font-weight:500; font-size:.92rem; line-height:1.3}
+.bar-t span{display:block; font-size:.7rem; color:var(--muted)}
+.icon{width:2.1rem; height:2.1rem; border-radius:50%; display:grid; place-items:center;
+  font-family:"IBM Plex Mono",monospace; font-size:.85rem; color:var(--muted)}
+.icon[aria-pressed="true"]{background:var(--celadon-wash); color:var(--celadon)}
+
+/* ── 메시지 ─────────────────────────────── */
+#log{flex:1; min-height:0; overflow-y:auto; padding:1.1rem .9rem 1.4rem;
+  display:flex; flex-direction:column; gap:.85rem; scroll-behavior:smooth}
+.row{display:flex; gap:.55rem; align-items:flex-end; animation:rise .28s ease both}
+@keyframes rise{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:none}}
+.row.me{justify-content:flex-end}
+.row .face{width:1.7rem; height:1.7rem; font-size:.75rem; margin-bottom:.1rem}
+.bub{max-width:81%; padding:.6rem .85rem; border-radius:3px 12px 12px 12px;
+  background:var(--paper); border:1px solid var(--rule-soft); box-shadow:var(--shadow);
+  font-size:.95rem; color:var(--ink-soft)}
+.row.me .bub{background:var(--indigo); color:var(--on-indigo); border-color:transparent;
+  border-radius:12px 3px 12px 12px; font-weight:400}
+.bub.appeal{border-left:3px solid var(--seal-rail); background:var(--seal-wash);
+  font-family:"Nanum Myeongjo",serif; font-size:1rem; color:var(--ink)}
+.bub.appeal::before{content:"정의감 호출"; display:block; font-family:"IBM Plex Mono",monospace;
+  font-size:.6rem; letter-spacing:.18em; color:var(--seal); margin-bottom:.25rem}
+
+/* 원문은 말풍선이 아니다 */
+.quote{border-left:3px solid var(--seal-rail); background:var(--seal-wash);
+  padding:.85rem .95rem 1rem; border-radius:0 3px 3px 0; animation:rise .3s ease both}
+.qh{display:flex; flex-wrap:wrap; gap:.45rem; font-family:"IBM Plex Mono",monospace;
+  font-size:.62rem; letter-spacing:.12em; color:var(--seal); margin-bottom:.45rem}
+.qh em{font-style:normal; color:var(--faint); letter-spacing:.04em}
+.qko{font-family:"Nanum Myeongjo",serif; font-size:1.14rem; line-height:1.75; margin:0; white-space:pre-line}
+.qko.long{font-size:1.02rem; line-height:1.8}
+.qsrc{font-family:"IBM Plex Mono",monospace; font-size:.72rem; line-height:1.7;
+  color:var(--muted); margin:.6rem 0 0; white-space:pre-line; display:none}
+.quote.open .qsrc{display:block}
+.qtoggle{font-family:"IBM Plex Mono",monospace; font-size:.63rem; letter-spacing:.1em;
+  color:var(--faint); margin-top:.5rem; padding:.15rem 0}
+
+/* 시스템 알림 */
+.sys{align-self:center; max-width:92%; text-align:center; font-size:.76rem; color:var(--ochre);
+  background:var(--ochre-wash); border:1px solid var(--ochre-wash); border-radius:99px;
+  padding:.4rem .9rem; animation:rise .3s ease both}
+.sys b{font-weight:500}
+
+/* 계기 */
+.gauge{display:none; flex-wrap:wrap; gap:.1rem .8rem; margin:-.35rem 0 0 2.25rem;
+  font-family:"IBM Plex Mono",monospace; font-size:.64rem; font-variant-numeric:tabular-nums;
+  color:var(--faint)}
+body.gauges .gauge{display:flex}
+.gauge b{font-weight:500; color:var(--muted)}
+.gauge .why{width:100%; font-family:"IBM Plex Sans KR",sans-serif; font-size:.68rem; color:var(--faint)}
+
+/* 대조 카드 */
+.contrast{background:var(--paper); border:1px solid var(--rule-soft); border-radius:3px;
+  padding:.9rem 1rem; box-shadow:var(--shadow); animation:rise .3s ease both}
+.contrast h4{font-family:"IBM Plex Mono",monospace; font-size:.63rem; letter-spacing:.16em;
+  color:var(--celadon); margin:0 0 .6rem; font-weight:500}
+.side{padding-left:.7rem; border-left:2px solid var(--rule); margin-bottom:.7rem}
+.side .lbl{font-family:"IBM Plex Mono",monospace; font-size:.6rem; letter-spacing:.14em;
+  color:var(--faint); display:block; margin-bottom:.15rem}
+.side.orig{border-color:var(--seal-rail)}
+.side.orig p{font-family:"Nanum Myeongjo",serif; font-size:1rem; margin:0; white-space:pre-line}
+.side.para p{font-size:.9rem; color:var(--ink-soft); margin:0}
+.ask{font-size:.85rem; color:var(--ink); margin:.2rem 0 .55rem}
+.choose{display:flex; gap:.5rem}
+.choose button{flex:1; border:1px solid var(--rule); border-radius:2px; padding:.45rem;
+  font-size:.82rem; color:var(--ink-soft)}
+.choose button:active{background:var(--sunken)}
+.verdict-txt{font-size:.85rem; color:var(--ink-soft); margin:.55rem 0 0}
+
+/* 하단 */
+.chips{display:flex; gap:.4rem; overflow-x:auto; padding:.5rem .9rem 0; flex:none;
+  scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none; border:1px solid var(--rule); border-radius:99px; padding:.28rem .75rem;
+  font-size:.78rem; color:var(--muted); background:var(--paper)}
+.chip:active{background:var(--sunken)}
+.composer{display:flex; gap:.5rem; align-items:center; padding:.6rem .9rem calc(.7rem + env(safe-area-inset-bottom));
+  background:var(--paper); border-top:1px solid var(--rule); flex:none}
+.composer input{flex:1; min-width:0; background:var(--ground); border:1px solid var(--rule);
+  border-radius:99px; padding:.6rem .95rem; font-size:.95rem; color:var(--ink)}
+.composer input::placeholder{color:var(--faint)}
+.send{width:2.4rem; height:2.4rem; flex:none; border-radius:50%; background:var(--indigo);
+  color:var(--on-indigo); display:grid; place-items:center; font-size:1rem}
+.send:disabled{opacity:.35}
+.typing{display:flex; gap:.22rem; padding:.7rem .9rem}
+.typing i{width:.32rem; height:.32rem; border-radius:50%; background:var(--faint);
+  animation:blink 1.1s infinite}
+.typing i:nth-child(2){animation-delay:.18s} .typing i:nth-child(3){animation-delay:.36s}
+@keyframes blink{0%,60%,100%{opacity:.25} 30%{opacity:1}}
+</style>
+
+<div id="app">
+
+<section id="home" class="view on">
+  <div>
+    <h1 class="brand">筆談<small>PILDAM</small></h1>
+    <p class="pitch">400년 전 사람과 대화하는 방법은 예나 지금이나 <b>쓰인 것</b>뿐입니다.
+      문우를 골라 말을 거십시오. 붉은 칸의 문장은 전부 죽은 사람이 썼습니다.</p>
+  </div>
+  <nav class="rooms" id="rooms"></nav>
+  <p class="vow"><b>이 앱의 규칙 하나.</b> AI는 문학을 쓰지 않습니다.
+    인용문은 모델이 만들 수 없고 코퍼스에서만 나옵니다. 요약을 요구해도 요약하지 않습니다.</p>
+</section>
+
+<section id="chat" class="view">
+  <header class="bar">
+    <button class="icon" id="back" aria-label="문우 목록으로">←</button>
+    <div class="face" id="face">셰</div>
+    <div class="bar-t"><b id="who">—</b><span id="what">—</span></div>
+    <button class="icon" id="gtoggle" aria-pressed="false" aria-label="계기 보기">δπ</button>
+  </header>
+  <div id="log"></div>
+  <div class="chips" id="chips"></div>
+  <form class="composer" id="form">
+    <input id="say" placeholder="문우에게 말을 거십시오" autocomplete="off" enterkeyhint="send">
+    <button class="send" id="sendbtn" type="submit" aria-label="보내기">↑</button>
+  </form>
+</section>
+
+</div>
+
+<script>
+const CORPUS = __CORPUS__;
+const BANK = __BANK__;
+
+const WRITERS = {
+  shakespeare: {name:"윌리엄 셰익스피어", died:1616, face:"셰", cls:"",
+    blurb:"플롯은 훔쳤고 작품 편차는 크다. 그 위에 언어가 있다."},
+  austen: {name:"제인 오스틴", died:1817, face:"오", cls:"b",
+    blurb:"좁은 무대에서 결혼이라는 경제 제도를 해부한다."},
+};
+const ROOMS = [
+  {id:"shakespeare.sonnet18", writer:"shakespeare", title:"소네트 18",
+   hook:"연인을 찬미하다 결국 자기 시를 자랑하는 열네 행"},
+  {id:"shakespeare.hamlet", writer:"shakespeare", title:"햄릿 · 3막 1장",
+   hook:"가장 유명한 대사가 실은 아무것도 결정하지 못한다"},
+  {id:"austen.pp", writer:"austen", title:"오만과 편견 · 다아시의 편지",
+   hook:"당신의 감정이 아니라 정의감에 요구한다"},
+];
+
+/* ── 계약 (specs/response-contract.md) ──────────────────── */
+const VQR_FLOOR = 0.60, VQR_FLOOR_APPEAL = 0.75, FRAME_BUDGET = 400,
+      FRAME_RATIO = 0.8, APPEAL_TAU = 10;
+const BANNED = [
+  [/(마음|심정)[이을]?\s*(충분히\s*)?(이해|공감)/, "감정 미러링"],
+  [/(슬프|힘드|괴로우)시겠/, "감정 미러링"],
+  [/(위대한|아름다운|훌륭한)\s*(작품|문장|글|구절)/, "작품 평가"],
+  [/요컨대|정리하자면|한마디로/, "요약 접속"],
+  [/물론\s*반대\s*(의견|견해)도/, "무해한 균형"],
+];
+
+/* ── 상태 ───────────────────────────────────────────────── */
+let S = null;
+const store = {
+  get(k, d){ try { return JSON.parse(localStorage.getItem("pildam."+k)) ?? d; } catch(e){ return d; } },
+  set(k, v){ try { localStorage.setItem("pildam."+k, JSON.stringify(v)); } catch(e){} },
+};
+
+function openRoom(room){
+  const tau = store.get("tau."+room.id, 2);
+  S = {room, writer:WRITERS[room.writer], tau, turns:0, shown:[], used:[],
+       stance:null, stanceVp:null, highlights:store.get("hl."+room.id, []), variant:0};
+  document.getElementById("face").textContent = S.writer.face;
+  document.getElementById("face").className = "face " + S.writer.cls;
+  document.getElementById("who").textContent = S.writer.name;
+  document.getElementById("what").textContent = room.title + " · τ " + tau;
+  log.innerHTML = "";
+  show("chat");
+  sysLine(`${S.writer.name} · 몰년 ${S.writer.died}. 원문은 Project Gutenberg 저본에서 추출됐습니다.`);
+  step("__open__", "continue");
+}
+
+/* ── ① 의도 ─────────────────────────────────────────────── */
+function classify(t){
+  if (/요약|줄거리|정리해|간단히|짧게/.test(t)) return "summary_request";
+  if (/오만|무책임|이기적|비겁|한심|위선|틀렸|나쁘|겁쟁이|우유부단|찌질|싫/.test(t)) return "verdict";
+  if (/^(맞아|그러네|그렇네|동의|응|그런\s*것\s*같아|인정)/.test(t.trim())) return "agree";
+  if (/밑줄|저장|남기고/.test(t)) return "highlight";
+  if (/\?|왜|어떻게|무슨|뭐/.test(t)) return "question";
+  return "continue";
+}
+const VPS = {"햄릿":["햄릿","왕자"],"다아시":["다아시"],"화자":["화자","시인","셰익스피어"],
+             "엘리자베스":["엘리자베스","리지"]};
+function target(t){ for (const [vp,hs] of Object.entries(VPS)) if (hs.some(h=>t.includes(h))) return vp; return null; }
+
+/* ── ② 컨트롤러 ─────────────────────────────────────────── */
+function control(intent){
+  let d = Math.min(.75, .20 + .05*S.turns);
+  if (S.turns > 12) d = Math.max(.30, d - .04*(S.turns-12));
+  if (S.highlights.length) d = Math.min(.85, d + .05);
+  let p = .20, why = "기본값";
+  if (intent === "verdict"){ p = .75; why = "확신에 찬 판정 → 반대 시점으로 이동"; }
+  else if (intent === "agree"){ p = .45; why = "동의만 반복 → 승인 루프 회피"; }
+  else if (intent === "summary_request"){ p = .10; why = "요약 요구 = 부하 초과 → π 하강, MIP 재산정"; }
+  else if (intent === "question"){ p = .35; why = "질문 — 중간값"; }
+  const cap = Math.min(1, .20 + .08*S.tau);
+  if (p > cap){ why += ` / τ=${S.tau} 상한 ${cap.toFixed(2)} 절삭`; p = cap; }
+  return {d:+d.toFixed(2), p:+p.toFixed(2), why};
+}
+
+/* ── ③④ 검색 + MIP ─────────────────────────────────────── */
+function retrieve(intent, d, p){
+  let pool = Object.entries(CORPUS).filter(([,s]) => s.work_id === S.room.id);
+  // 정의감 호출을 할 참이면, 그 무게를 감당할 분량의 대목만 후보로 둔다.
+  // 관점을 짧게 요약해 들이미는 것은 허수아비 만들기다 (04장 4.5절).
+  if (p >= .7 && S.tau >= APPEAL_TAU && S.stance){
+    const capable = pool.filter(([sid, s]) => BANK[sid] &&
+      s.text_ko.length >= BANK[sid].appeal.length * VQR_FLOOR_APPEAL / (1 - VQR_FLOOR_APPEAL) * 1.35);
+    if (capable.length) pool = capable;
+  }
+  let best = null, bestScore = -1e9;
+  for (const [sid, s] of pool){
+    let sc = 0;
+    if (S.used.slice(-3).includes(sid)) sc -= 4;
+    else if (S.shown.includes(sid)) sc -= 1.6;
+    if (S.highlights.includes(sid)) sc += 2*d;
+    if (p >= .5 && S.stanceVp) sc += (s.viewpoint === S.stanceVp) ? 2.5*p : -.5;
+    if (!S.shown.includes(sid)) sc += 1.8;                       // 진도 전진
+    sc -= .12 * (s.difficulty||2) * (S.tau < 5 ? 1 : .3);
+    sc += Math.random()*.25;
+    if (sc > bestScore){ bestScore = sc; best = sid; }
+  }
+  if (!best) return [];
+  const out = [];
+  const add = sid => {
+    if (out.includes(sid)) return;
+    for (const pre of (CORPUS[sid].prereq_spans||[]))
+      if (!S.shown.includes(pre)) add(pre);
+    out.push(sid);
+  };
+  add(best);
+  return out;
+}
+
+/* ── ⑤ 프레임 (Gemini가 미리 생성한 뱅크에서) ──────────── */
+function frameFor(sid, intent, tight){
+  const b = BANK[sid]; if (!b) return "계속 읽습니다.";
+  const arr = b[intent] || b.continue || [];
+  if (!arr.length) return "계속 읽습니다.";
+  if (tight) return arr.slice().sort((a,x)=>a.length-x.length)[0];
+  return arr[(S.variant++) % arr.length];
+}
+
+/* ── ⑥ 계약 검증 ───────────────────────────────────────── */
+function validate(frame, appeal, spanIds){
+  const q = spanIds.reduce((n,s)=>n+CORPUS[s].text_ko.length, 0);
+  const m = frame.length + (appeal?appeal.length:0);
+  const errs = [];
+  const floor = appeal ? VQR_FLOOR_APPEAL : VQR_FLOOR;
+  const vqr = q+m ? q/(q+m) : 0;
+  if (vqr < floor) errs.push("VQR_FLOOR");
+  if (m > FRAME_BUDGET) errs.push("FRAME_BUDGET");
+  if (m > FRAME_RATIO*q) errs.push("FRAME_RATIO");
+  for (const [re, label] of BANNED)
+    if (re.test(frame) || (appeal && re.test(appeal))) errs.push("BANNED:"+label);
+  return {errs, vqr, slp: errs.some(e=>e.startsWith("BANNED")) ? 1 : 0};
+}
+
+/* ── 한 턴 ─────────────────────────────────────────────── */
+function step(text, forced){
+  const intent = forced || classify(text);
+  S.lastIntent = intent;
+  if (intent === "verdict"){ S.stance = text; S.stanceVp = target(text) || S.stanceVp; }
+  S.turns++;
+  const {d, p, why} = control(intent);
+  const spans = retrieve(intent, d, p);
+
+  if (!spans.length){
+    sysLine("이 작품에서 더 제시할 대목이 없습니다. <b>요약으로 대체하지 않습니다.</b>");
+    return;
+  }
+
+  const useAppeal = p >= .7 && S.tau >= APPEAL_TAU && S.stance && BANK[spans[spans.length-1]];
+  let frame = frameFor(spans[spans.length-1], intent, false);
+  let appeal = useAppeal ? BANK[spans[spans.length-1]].appeal : null;
+  let r = validate(frame, appeal, spans);
+  if (r.errs.length){
+    frame = frameFor(spans[spans.length-1], intent, true);
+    r = validate(frame, appeal, spans);
+  }
+  if (r.errs.length && appeal){ appeal = null; r = validate(frame, null, spans); }
+  const fallback = r.errs.length ? r.errs : null;
+  if (fallback) frame = null;
+
+  typing(() => {
+    if (frame) bubble(frame);
+    if (appeal) bubble(appeal, "appeal");
+    spans.forEach(sid => quoteCard(sid));
+    if (fallback) sysLine(`프레임이 계약을 통과하지 못했습니다 (${fallback.join(", ")}). 원문만 제시합니다.`);
+    gaugeLine(d, p, r.vqr, r.slp, why);
+    spans.forEach(sid => { if (!S.shown.includes(sid)) S.shown.push(sid); });
+    S.used.push(...spans);
+    if (intent === "highlight" && spans.length){
+      S.highlights.push(spans[spans.length-1]);
+      store.set("hl."+S.room.id, S.highlights);
+    }
+    S.tau++; store.set("tau."+S.room.id, S.tau);
+    document.getElementById("what").textContent = S.room.title + " · τ " + S.tau;
+  });
+}
+
+/* ── 렌더 ──────────────────────────────────────────────── */
+const log = document.getElementById("log");
+const scroll = () => { log.scrollTop = log.scrollHeight; };
+function el(html){ const t = document.createElement("template"); t.innerHTML = html.trim(); return t.content.firstElementChild; }
+function esc(s){ return s.replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c])); }
+
+function mine(text){ log.append(el(`<div class="row me"><div class="bub">${esc(text)}</div></div>`)); scroll(); }
+function bubble(text, cls){
+  log.append(el(`<div class="row"><div class="face ${S.writer.cls}">${S.writer.face}</div>
+    <div class="bub ${cls||""}">${esc(text)}</div></div>`)); scroll();
+}
+function sysLine(html){ log.append(el(`<div class="sys">${html}</div>`)); scroll(); }
+function gaugeLine(d,p,vqr,slp,why){
+  log.append(el(`<div class="gauge"><span>δ <b>${d.toFixed(2)}</b></span><span>π <b>${p.toFixed(2)}</b></span>
+    <span>τ <b>${S.tau}</b></span><span>VQR <b>${vqr.toFixed(2)}</b></span><span>SLP <b>${slp.toFixed(2)}</b></span>
+    <span class="why">${esc(why)}</span></div>`)); scroll();
+}
+function quoteCard(sid){
+  const s = CORPUS[sid];
+  const card = el(`<div class="quote">
+    <div class="qh"><span>원문</span><em>${esc(s.work_title)} · ${esc(s.locus)}</em></div>
+    <p class="qko${s.text_ko.length>150?" long":""}">${esc(s.text_ko)}</p>
+    <div class="qsrc">${esc(s.text_src)}</div>
+    <button class="qtoggle">원어 보기 ↓</button>
+  </div>`);
+  const btn = card.querySelector(".qtoggle");
+  btn.addEventListener("click", () => {
+    card.classList.toggle("open");
+    btn.textContent = card.classList.contains("open") ? "원어 접기 ↑" : "원어 보기 ↓";
+  });
+  log.append(card); scroll();
+}
+
+/* 적확성 대조 */
+function contrast(){
+  const sid = S.shown[S.shown.length-1] || Object.keys(CORPUS).find(k=>CORPUS[k].work_id===S.room.id);
+  const s = CORPUS[sid], b = BANK[sid];
+  if (!b) return;
+  const card = el(`<div class="contrast">
+    <h4>적확성 대조</h4>
+    <div class="side orig"><span class="lbl">원문</span><p>${esc(s.text_ko)}</p></div>
+    <div class="side para"><span class="lbl">모델이 다시 쓴 것</span><p>${esc(b.paraphrase)}</p></div>
+    <p class="ask">어느 쪽이 더 정확합니까?</p>
+    <div class="choose"><button data-a="orig">원문</button><button data-a="para">다시 쓴 것</button></div>
+  </div>`);
+  card.querySelectorAll("button").forEach(btn => btn.addEventListener("click", () => {
+    const orig = btn.dataset.a === "orig";
+    card.querySelector(".choose").remove();
+    card.append(el(`<p class="verdict-txt">${orig
+      ? "매끄러운 쪽은 손에 잡히지 않습니다. 사라진 것은 <b>망설임의 리듬</b>입니다 — 뜻은 남고 겪음이 없어집니다."
+      : "그렇게 느꼈다면 그것이 미끄러움입니다. 읽기 쉬운 쪽이 늘 더 많이 말하는 것은 아닙니다."}</p>`));
+    scroll();
+  }));
+  log.append(card); scroll();
+}
+
+function typing(done){
+  const t = el(`<div class="row"><div class="face ${S.writer.cls}">${S.writer.face}</div>
+    <div class="bub typing"><i></i><i></i><i></i></div></div>`);
+  log.append(t); scroll();
+  setTimeout(() => { t.remove(); done(); }, 420 + Math.random()*380);
+}
+
+/* ── 셸 ────────────────────────────────────────────────── */
+function show(id){ document.querySelectorAll(".view").forEach(v => v.classList.toggle("on", v.id === id)); }
+const CHIPS = [
+  {t:"계속", say:"계속"},
+  {t:"요약해줘", say:"그냥 줄거리 요약해줘"},
+  {t:"밑줄", say:"이 구절 밑줄 긋고 싶어"},
+  {t:"다시", act:"regen"},
+  {t:"적확성 대조", act:"contrast"},
+  {t:"τ +20", act:"tau"},
+];
+document.getElementById("rooms").append(...ROOMS.map(r => {
+  const w = WRITERS[r.writer];
+  const b = el(`<button class="room"><div class="face ${w.cls}">${w.face}</div>
+    <div class="room-t"><b>${r.title}</b><span>${w.name} — ${r.hook}</span></div>
+    <span class="room-n">τ ${store.get("tau."+r.id, 2)}</span></button>`);
+  b.addEventListener("click", () => openRoom(r));
+  return b;
+}));
+document.getElementById("chips").append(...CHIPS.map(c => {
+  const b = el(`<button class="chip">${c.t}</button>`);
+  b.addEventListener("click", () => {
+    if (c.act === "contrast") return contrast();
+    if (c.act === "regen"){ S.variant++; sysLine("다시 씁니다."); return step("__regen__", S.lastIntent||"continue"); }
+    if (c.act === "tau"){ S.tau += 20; store.set("tau."+S.room.id, S.tau);
+      document.getElementById("what").textContent = S.room.title + " · τ " + S.tau;
+      return sysLine(`τ를 <b>${S.tau}</b>로 올렸습니다. 이제 정의감 호출이 가능합니다.`); }
+    mine(c.say); step(c.say);
+  });
+  return b;
+}));
+document.getElementById("back").addEventListener("click", () => {
+  document.getElementById("rooms").querySelectorAll(".room-n").forEach((n,i) =>
+    n.textContent = "τ " + store.get("tau."+ROOMS[i].id, 2));
+  show("home");
+});
+document.getElementById("gtoggle").addEventListener("click", e => {
+  const on = document.body.classList.toggle("gauges");
+  e.currentTarget.setAttribute("aria-pressed", on);
+});
+document.getElementById("form").addEventListener("submit", e => {
+  e.preventDefault();
+  const input = document.getElementById("say");
+  const v = input.value.trim(); if (!v) return;
+  input.value = ""; mine(v); step(v);
+});
+</script>
