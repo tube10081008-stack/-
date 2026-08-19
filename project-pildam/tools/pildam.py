@@ -10,6 +10,7 @@
 
 엔진:
   mock    — 결정론적. API 키 불필요. 파이프라인 전체를 보여준다.
+  gemini  — Google Gemini가 ⑤ 프레임만 생성한다. GEMINI_API_KEY 필요.
   claude  — Anthropic Messages API가 ⑤ 프레임만 생성한다. ANTHROPIC_API_KEY 필요.
 
 실행:
@@ -280,6 +281,95 @@ class ClaudeEngine:
         return {"blocks": blocks}
 
 
+class GeminiEngine:
+    """Google Gemini가 프레임만 생성한다. 인용문은 절대 생성하지 않는다.
+
+    ClaudeEngine과 동일한 계약을 따른다 — 모델은 span_id 후보와 문자수 예산을 받고
+    {frame, appeal} 만 돌려준다. 인용문 텍스트는 ⑦에서 코퍼스로부터 materialize 된다.
+    키는 GEMINI_API_KEY 환경변수에서만 읽는다. 코드나 저장소에 넣지 말 것.
+    """
+
+    name = "gemini"
+    ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+
+    SYSTEM = ClaudeEngine.SYSTEM
+
+    SCHEMA = {
+        "type": "OBJECT",
+        "properties": {
+            "frame": {"type": "STRING", "description": "문우의 프레임 문장. 예산 이내."},
+            "appeal": {"type": "STRING", "description": "정의감 호출. 필요 없으면 빈 문자열."},
+        },
+        "required": ["frame"],
+    }
+
+    def __init__(self, model: str = "gemini-3.1-pro-preview") -> None:
+        import requests  # 지연 임포트
+
+        self.requests = requests
+        self.model = model
+        self.key = os.environ.get("GEMINI_API_KEY")
+        if not self.key:
+            raise SystemExit("GEMINI_API_KEY 환경변수가 필요합니다.")
+
+    def frame(self, state: ReadingState, intent: str, span_ids: list[str],
+              delta: float, pi: float, corpus: dict, user_text: str,
+              attempt: int = 1) -> dict:
+        quoted_chars = sum(len(corpus[sid].get("text_ko") or "") for sid in span_ids)
+        budget = max(12, int((0.55 if attempt == 1 else 0.30) * quoted_chars))
+        payload = {
+            "systemInstruction": {"parts": [{"text": self.SYSTEM}]},
+            "contents": [{"role": "user", "parts": [{"text": json.dumps({
+                "독자_발화": user_text,
+                "독자의_표명_입장": state.stance,
+                "의도": intent,
+                "delta": delta,
+                "pi": pi,
+                "tau": state.tau,
+                "제시될_span": [
+                    {"span_id": sid,
+                     "작품": corpus[sid].get("work_title"),
+                     "위치": corpus[sid].get("locus"),
+                     "시점": corpus[sid].get("viewpoint"),
+                     "감정소득_태그": corpus[sid].get("income_tags", []),
+                     "야생성_메모": corpus[sid].get("wildness_note")}
+                    for sid in span_ids
+                ],
+                "프레임_최대_문자수": budget,
+                "재시도": attempt,
+                "지시": f"프레임은 {budget}자 이내. 원문을 인용하거나 옮겨 적지 말 것. "
+                        f"pi가 0.7 이상일 때만 appeal을 쓰고, 아니면 빈 문자열.",
+            }, ensure_ascii=False)}]}],
+            "generationConfig": {
+                "responseMimeType": "application/json",
+                "responseSchema": self.SCHEMA,
+                "temperature": 0.8,
+                "maxOutputTokens": 4096,
+            },
+        }
+        response = self.requests.post(
+            self.ENDPOINT.format(model=self.model),
+            params={"key": self.key}, json=payload, timeout=90)
+        response.raise_for_status()
+        data = response.json()
+        candidates = data.get("candidates") or []
+        if not candidates:
+            raise RuntimeError(f"Gemini 응답에 candidate 없음: {data.get('promptFeedback')}")
+        parts = candidates[0].get("content", {}).get("parts") or []
+        text = "".join(p.get("text", "") for p in parts)
+        if not text.strip():
+            raise RuntimeError(f"빈 응답 (finishReason={candidates[0].get('finishReason')})")
+        out = json.loads(text)
+
+        blocks = [{"type": "frame", "provenance": "model", "modality": "hypothesis",
+                   "text": out.get("frame", "").strip()}]
+        appeal = (out.get("appeal") or "").strip()
+        if appeal and pi >= 0.7:
+            blocks.append({"type": "appeal", "provenance": "model",
+                           "modality": "hypothesis", "text": appeal})
+        return {"blocks": blocks}
+
+
 # ------------------------------------------------------------------ ⑥⑦ 조립 · 검증 · 렌더링
 
 def build_turn(state: ReadingState, engine, intent: str, span_ids: list[str],
@@ -439,9 +529,14 @@ def repl(engine, corpus: dict, min_verification: str, work_id: str) -> None:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="필담 대화 프로토타입")
-    ap.add_argument("--engine", choices=["mock", "claude"], default="mock")
+    ap.add_argument("--engine", choices=["mock", "claude", "gemini"], default="mock")
+    ap.add_argument("--model", default="gemini-3.1-pro-preview",
+                    help="gemini 엔진에서 쓸 모델 이름")
     ap.add_argument("--corpus", default=str(DEFAULT_CORPUS))
     ap.add_argument("--demo", action="store_true")
+    ap.add_argument("--say", action="append", default=[],
+                    help="한 줄을 발화하고 응답을 출력한다. 여러 번 지정하면 한 세션에서 이어진다")
+    ap.add_argument("--tau", type=int, default=2, help="관계 연령(세션 수) 초기값")
     ap.add_argument("--work", default="shakespeare.sonnet18")
     ap.add_argument("--min-verification", choices=list(VERIFICATION_RANK),
                     default="self_attested",
@@ -454,13 +549,20 @@ def main() -> int:
             C[k] = ""
 
     corpus = json.load(open(args.corpus, encoding="utf-8"))["spans"]
-    engine = ClaudeEngine() if args.engine == "claude" else MockEngine()
+    engine = {"claude": ClaudeEngine,
+              "gemini": lambda: GeminiEngine(args.model),
+              "mock": MockEngine}[args.engine]()
 
     if args.min_verification != "sourced":
         print(f"{C['warn']}⚠ 최소 검증등급이 '{args.min_verification}'입니다. "
               f"저본 대조를 마치지 않은 텍스트가 인용될 수 있습니다 (L3 완화 모드).{C['r']}")
 
-    if args.demo:
+    if args.say:
+        state = ReadingState(work_id=args.work, tau=args.tau)
+        for line in args.say:
+            print(f"\n{C['b']}독자>{C['r']} {line}")
+            step(state, engine, corpus, line, args.min_verification)
+    elif args.demo:
         run_demo(engine, corpus, args.min_verification)
     else:
         repl(engine, corpus, args.min_verification, args.work)
