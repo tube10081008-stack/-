@@ -2,3 +2,4 @@ project-pildam/.env
 *.key
 .env
 project-pildam/app/index.html
+project-pildam/corpus/embeddings.json

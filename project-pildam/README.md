@@ -34,14 +34,26 @@ AI는 이미 존재하는 A+ 문학을 인용하고, 위치시키고, 도발하�
 | [`tools/validate_response.py`](tools/validate_response.py) | 응답 계약 검증기 (실행 가능) |
 | [`tools/pildam.py`](tools/pildam.py) | **대화 프로토타입 (실행 가능)** — 04장 파이프라인 ①~⑦ 전체 |
 | [`tools/build_corpus.py`](tools/build_corpus.py) | 저본 텍스트 → span 코퍼스 변환기 |
-| [`app/`](app/) | **채팅 앱** — 템플릿과 빌드 스크립트 |
+| [`server/`](server/) | **런타임 생성판** — 엔진, API, 클라이언트. 제품의 기준 |
+| [`app/`](app/) | 오프라인 미리보기 — 네트워크 없이 도는 정적판 |
 | [`corpus/`](corpus/) | 코퍼스(`pildam-v2.json`, sourced 10 span)와 Gemini 프레임 뱅크, 검증 등급 규칙 |
 | [`tools/extract_spans.py`](tools/extract_spans.py) | 저본에서 특정 대목을 span으로 추출 |
 | [`tools/gen_frames.py`](tools/gen_frames.py) | 프레임 뱅크 생성 (Gemini) |
 
 ## 실제로 대화해 보기
 
-### 채팅 앱 (모바일)
+### 서버 — 런타임 생성판 (제품의 기준)
+
+```bash
+pip install fastapi uvicorn requests
+GEMINI_API_KEY=... python3 project-pildam/server/app.py    # http://127.0.0.1:8000
+```
+
+의도 목록도, 응답 뱅크도, 키워드 표도 없다. 손으로 쓰는 것은 문우 카드·코퍼스·계약 셋뿐이고
+나머지는 매 턴 생성된다. 모델은 읽고 쓰고, 코드는 정책과 계약을 집행한다.
+자세한 것은 [`server/README.md`](server/README.md).
+
+### 채팅 앱 (오프라인 미리보기)
 
 `app/index.html` — 제타식 채팅 UI. 문우를 고르고 말을 걸면 원문이 온다.
 원문 카드는 말풍선이 아니고, 모델의 말은 작고 부차적이다. 화면이 곧 이 프로젝트의 논지다.
