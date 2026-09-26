@@ -2,6 +2,7 @@
 
 - `/` — 🃏 포켓몬 카드 팩 도감 (수록 팩·팩 가격·시세·가상 개봉·카드 스캐너)
 - `/partner/` — 🌊 포켓몬 파도타기 파트너
+- `/vault/` — 🗃️ 카드 보관소 (중저가 카드 보관·거래 MVP, Supabase 설정 필요)
 
-원본: `tube10081008-stack/Urge-surfing` 저장소의 `pokemon-cards/`, `pokemon-partner/` (브랜치 `claude/pokemon-development-vkpc26`).
+원본: `tube10081008-stack/Urge-surfing` 저장소의 `pokemon-cards/`, `pokemon-partner/`, `card-vault/` (브랜치 `claude/pokemon-development-vkpc26`).
 Pages 설정: Settings → Pages → Source "Deploy from a branch" → `claude/pokemon-development-vkpc26` / `/docs`.
